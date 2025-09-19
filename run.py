@@ -9,6 +9,20 @@ import os
 import argparse
 from simple_firewall import SimpleFirewall, main as firewall_main
 
+# Import colorama for colored output
+try:
+    from colorama import Fore, Style, init
+    init(autoreset=True)
+    HAS_COLORAMA = True
+except ImportError:
+    # Fallback if colorama is not available
+    class MockColor:
+        def __getattr__(self, name):
+            return ""
+    Fore = MockColor()
+    Style = MockColor()
+    HAS_COLORAMA = False
+
 def show_banner():
     """Display banner"""
     print("=" * 60)
@@ -32,7 +46,7 @@ def show_usage():
     print("  sudo python3 run.py -c config.json    # Use custom config")
     print("  sudo python3 run.py --stats           # Show network statistics")
     print("\nTesting:")
-    print("  python3 test_attacks.py 127.0.0.1     # Test firewall (in another terminal)")
+    # print("  python3 test_attacks.py 127.0.0.1     # Test firewall (in another terminal)")
     print("\nConfiguration file (firewall_config.json):")
     print("  Edit thresholds, whitelist IPs, and block duration")
     print("\nLogs:")
@@ -59,8 +73,6 @@ def main():
         # Import and show stats
         try:
             import psutil
-            from colorama import Fore, Style, init
-            init(autoreset=True)
             
             print(f"\n{Fore.CYAN}=== Network Statistics ==={Style.RESET_ALL}")
             stats = psutil.net_io_counters()
@@ -102,7 +114,7 @@ def main():
             return
         
         # Start the firewall
-        print(f"\n{Fore.GREEN}🚀 Starting firewall...{Style.RESET_ALL}")
+        # print(f"\n{Fore.GREEN}🚀 Starting firewall...{Style.RESET_ALL}")
         print(f"Config: {args.config}")
         print(f"Interface: {args.interface or 'auto-detect'}")
         
