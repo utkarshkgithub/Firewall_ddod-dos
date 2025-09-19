@@ -34,11 +34,11 @@ init(autoreset=True)
 @dataclass
 class AttackSignature:
     """Defines attack patterns and thresholds"""
-    syn_flood_threshold: int = 100  # SYN packets per minute
-    connection_threshold: int = 50   # Connections per IP per minute
-    packet_rate_threshold: int = 1000  # Packets per IP per minute
-    port_scan_threshold: int = 20    # Different ports accessed per minute
-    icmp_flood_threshold: int = 100  # ICMP packets per minute
+    syn_flood_threshold: int = 4*100  # SYN packets per minute
+    connection_threshold: int = 4*50   # Connections per IP per minute
+    packet_rate_threshold: int = 4*1000  # Packets per IP per minute
+    port_scan_threshold: int = 4*20    # Different ports accessed per minute
+    icmp_flood_threshold: int = 4*100  # ICMP packets per minute
 
 class FirewallStats:
     """Statistics tracking for the firewall"""
@@ -101,7 +101,7 @@ class SimpleFirewall:
         """Load configuration from file or use defaults"""
         default_config = {
             'thresholds': {},
-            'whitelist': ['127.0.0.1', '::1'],
+            'whitelist': ['::1'],
             'block_duration': 300,  # 5 minutes
             'log_level': 'INFO'
         }
